@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `context` mod in crate `rspec`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, context">
+
+    <title>rspec::context - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='../index.html'>rspec</a></p><script>window.sidebarCurrent = {name: 'context', ty: 'mod', relpath: '../'};</script><script defer src="../sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content mod">
+<h1 class='fqn'><span class='in-band'>Module <a href='../index.html'>rspec</a>::<wbr><a class='mod' href=''>context</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-134' class='srclink' href='../../src/rspec/src/context.rs.html#1-542' title='goto source code'>[src]</a></span></h1>
+<div class='docblock'><p>The Context module holds all the functionality for the test declaration, that is: <code>describe</code>,
+<code>before</code>, <code>after</code>, <code>it</code> and their variants.</p>
+
+<p>A Context can also holds reference to children Contextes, for whom the before closures will be
+executed after the before closures of the current context. The order of execution of tests
+respect the order of declaration of theses tests.</p>
+
+<p>Running these tests and doing asserts is not the job of the Context, but the Runner, which is
+a struct returned by the root context declaration.</p>
+
+<h1 id='examples' class='section-header'><a href='#examples'>Examples</a></h1>
+<pre class='rust rust-example-rendered'>
+<span class='kw'>use</span> <span class='ident'>rspec</span>::<span class='ident'>context</span>::<span class='op'>*</span>;
+
+<span class='comment'>// `rdescribe` instanciate a runner and run it transparently</span>
+<span class='ident'>rdescribe</span>(<span class='string'>&quot;Context&quot;</span>, <span class='op'>|</span><span class='ident'>ctx</span><span class='op'>|</span> {
+    <span class='ident'>describe</span>(<span class='string'>&quot;Context::describe&quot;</span>, <span class='op'>|</span><span class='ident'>ctx</span><span class='op'>|</span> {
+        <span class='ident'>ctx</span>.<span class='ident'>it</span>(<span class='string'>&quot;can be nested&quot;</span>, <span class='op'>||</span> <span class='prelude-val'>Ok</span>(()) <span class='kw'>as</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(),()<span class='op'>&gt;</span>);
+        <span class='ident'>ctx</span>.<span class='ident'>it</span>(<span class='string'>&quot;use a `ctx` object&quot;</span>, <span class='op'>||</span> <span class='prelude-val'>Ok</span>(()) <span class='kw'>as</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(),()<span class='op'>&gt;</span>)
+    });
+
+    <span class='ident'>describe</span>(<span class='string'>&quot;Context::it&quot;</span>, <span class='op'>|</span><span class='ident'>ctx</span><span class='op'>|</span> {
+        <span class='ident'>ctx</span>.<span class='ident'>it</span>(<span class='string'>&quot;uses a Result returns&quot;</span>, <span class='op'>||</span> <span class='prelude-val'>Ok</span>(()) <span class='kw'>as</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(),()<span class='op'>&gt;</span>);
+        <span class='ident'>ctx</span>.<span class='ident'>it</span>(<span class='string'>&quot;can also use asserts&quot;</span>, <span class='op'>||</span> {
+            <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='number'>42</span>, <span class='number'>12</span> <span class='op'>+</span> <span class='number'>30</span>);
+            <span class='prelude-val'>Ok</span>(()) <span class='kw'>as</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(),()<span class='op'>&gt;</span> <span class='comment'>// don&#39;t forget the result type</span>
+        })
+    });
+});</pre>
+</div><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='struct' href='struct.Context.html'
+                                  title='rspec::context::Context'>Context</a></td>
+                           <td class='docblock short'>
+                                <p>A Context holds a collection of tests, a collection of closures to call before running any
+tests, and a collection of closure to call <em>after</em> all the tests..</p>
+                           </td>
+                       </tr></table><h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='enum' href='enum.Testable.html'
+                                  title='rspec::context::Testable'>Testable</a></td>
+                           <td class='docblock short'>
+                                <p>This enum is used to build a tree of named tests and contextes.</p>
+                           </td>
+                       </tr></table><h2 id='functions' class='section-header'><a href="#functions">Functions</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.describe.html'
+                                  title='rspec::context::describe'>describe</a></td>
+                           <td class='docblock short'>
+                                <p>This is the root describe. It will instanciate a root <code>Context</code> that you can use to declare
+examples, and will returns a Runner ready to run the tests.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.rdescribe.html'
+                                  title='rspec::context::rdescribe'>rdescribe</a></td>
+                           <td class='docblock short'>
+                                <p>This is the root describe with a sugar. It will instanciate a root <code>Context</code> that you can use
+to declare examples, will instanciate a <code>Runner</code> for the test and run them.</p>
+                           </td>
+                       </tr></table><h2 id='types' class='section-header'><a href="#types">Type Definitions</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='type' href='type.AfterFunction.html'
+                                  title='rspec::context::AfterFunction'>AfterFunction</a></td>
+                           <td class='docblock short'>
+                                <p>This is the type used by the closure given as argument of a <code>Context::after()</code> call.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='type' href='type.BeforeFunction.html'
+                                  title='rspec::context::BeforeFunction'>BeforeFunction</a></td>
+                           <td class='docblock short'>
+                                <p>This is the type used by the closure given as argument of a <code>Context::before()</code> call.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='type' href='type.TestFunction.html'
+                                  title='rspec::context::TestFunction'>TestFunction</a></td>
+                           <td class='docblock short'>
+                                <p>This is the type used by the closure given as argument of a <code>Context::it()</code> call.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='type' href='type.TestResult.html'
+                                  title='rspec::context::TestResult'>TestResult</a></td>
+                           <td class='docblock short'>
+                                <p>The type used for a test result</p>
+                           </td>
+                       </tr></table></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../";
+        window.currentCrate = "rspec";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../../jquery.js"></script>
+    <script src="../../main.js"></script>
+    
+    <script defer src="../../search-index.js"></script>
+</body>
+</html>

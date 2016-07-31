@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `Context` struct in crate `rspec`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, Context">
+
+    <title>rspec::context::Context - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='../index.html'>rspec</a>::<wbr><a href='index.html'>context</a></p><script>window.sidebarCurrent = {name: 'Context', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content struct">
+<h1 class='fqn'><span class='in-band'>Struct <a href='../index.html'>rspec</a>::<wbr><a href='index.html'>context</a>::<wbr><a class='struct' href=''>Context</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-153' class='srclink' href='../../src/rspec/src/context.rs.html#67-71' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct Context&lt;'a&gt; {
+    pub tests: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;<a class='enum' href='../../rspec/context/enum.Testable.html' title='rspec::context::Testable'>Testable</a>&lt;'a&gt;&gt;,
+    pub before_each: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='type' href='../../rspec/context/type.BeforeFunction.html' title='rspec::context::BeforeFunction'>BeforeFunction</a>&lt;'a&gt;&gt;&gt;,
+    pub after_each: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a class='type' href='../../rspec/context/type.AfterFunction.html' title='rspec::context::AfterFunction'>AfterFunction</a>&lt;'a&gt;&gt;&gt;,
+}</pre><div class='docblock'><p>A Context holds a collection of tests, a collection of closures to call before running any
+tests, and a collection of closure to call <em>after</em> all the tests..</p>
+
+<p>This is effectively the struct we fill when calling <code>ctx.it()</code></p>
+</div><h2 class='fields'>Fields</h2>
+<table><tr class='stab '>
+                             <td id='structfield.tests'><code>tests</code></td><td></td></tr><tr class='stab '>
+                             <td id='structfield.before_each'><code>before_each</code></td><td></td></tr><tr class='stab '>
+                             <td id='structfield.after_each'><code>after_each</code></td><td></td></tr></table><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl&lt;'a&gt; <a class='struct' href='../../rspec/context/struct.Context.html' title='rspec::context::Context'>Context</a>&lt;'a&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a id='src-161' class='srclink' href='../../src/rspec/src/context.rs.html#73-251' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.describe' class='method'><code>fn <a href='#method.describe' class='fnname'>describe</a>&lt;F&gt;(&amp;mut self, name: &amp;'a <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, body: F) <span class='where'>where F: 'a + <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html' title='core::marker::Sync'>Sync</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.FnOnce.html' title='core::ops::FnOnce'>FnOnce</a>(&amp;mut <a class='struct' href='../../rspec/context/struct.Context.html' title='rspec::context::Context'>Context</a>&lt;'a&gt;) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a></span></code></h4>
+<div class='docblock'><p>Open and name a new example group, which will be keeped as a child context of the current
+context.</p>
+
+<p>Note that the order of declaration is respected for running the tests.</p>
+
+<h1 id='examples' class='section-header'><a href='#examples'>Examples</a></h1>
+<pre class='rust rust-example-rendered'>
+<span class='kw'>use</span> <span class='ident'>rspec</span>::<span class='ident'>context</span>::<span class='ident'>rdescribe</span>;
+
+<span class='comment'>// `rdescribe` instanciate a runner and run it transparently</span>
+<span class='ident'>rdescribe</span>(<span class='string'>&quot;inside this describe, we use the context&quot;</span>, <span class='op'>|</span><span class='ident'>ctx</span><span class='op'>|</span> {
+
+    <span class='ident'>ctx</span>.<span class='ident'>it</span>(<span class='string'>&quot;should run first&quot;</span>, <span class='op'>||</span> <span class='prelude-val'>Ok</span>(()) <span class='kw'>as</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(),()<span class='op'>&gt;</span>);
+
+    <span class='ident'>ctx</span>.<span class='ident'>describe</span>(<span class='string'>&quot;open describe&quot;</span>, <span class='op'>|</span><span class='ident'>ctx</span><span class='op'>|</span> {
+
+        <span class='ident'>ctx</span>.<span class='ident'>it</span>(<span class='string'>&quot;should run second&quot;</span>, <span class='op'>||</span> <span class='prelude-val'>Ok</span>(()) <span class='kw'>as</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(),()<span class='op'>&gt;</span>);
+
+        <span class='ident'>ctx</span>.<span class='ident'>describe</span>(<span class='string'>&quot;in a describe&quot;</span>, <span class='op'>|</span><span class='ident'>ctx</span><span class='op'>|</span> {
+
+            <span class='ident'>ctx</span>.<span class='ident'>describe</span>(<span class='string'>&quot;in a describe&quot;</span>, <span class='op'>|</span><span class='ident'>_ctx</span><span class='op'>|</span> {});
+
+            <span class='ident'>ctx</span>.<span class='ident'>it</span>(<span class='string'>&quot;should run third&quot;</span>, <span class='op'>||</span> <span class='prelude-val'>Ok</span>(()) <span class='kw'>as</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(),()<span class='op'>&gt;</span>);
+
+        });
+    });
+
+    <span class='ident'>ctx</span>.<span class='ident'>it</span>(<span class='string'>&quot;should run last&quot;</span>, <span class='op'>||</span> <span class='prelude-val'>Ok</span>(()) <span class='kw'>as</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(),()<span class='op'>&gt;</span>);
+});</pre>
+</div><h4 id='method.it' class='method'><code>fn <a href='#method.it' class='fnname'>it</a>&lt;F, T&gt;(&amp;mut self, name: &amp;'a <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, body: F) <span class='where'>where F: 'a + <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html' title='core::marker::Sync'>Sync</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.FnMut.html' title='core::ops::FnMut'>FnMut</a>() -&gt; T, T: <a class='trait' href='https://doc.rust-lang.org/nightly/core/convert/trait.Into.html' title='core::convert::Into'>Into</a>&lt;<a class='struct' href='../../rspec/example_result/struct.ExampleResult.html' title='rspec::example_result::ExampleResult'>ExampleResult</a>&gt;</span></code></h4>
+<div class='docblock'><p>Register and name a closure as an example</p>
+
+<h1 id='examples-1' class='section-header'><a href='#examples-1'>Examples</a></h1>
+<pre class='rust rust-example-rendered'>
+<span class='kw'>use</span> <span class='ident'>rspec</span>::<span class='ident'>context</span>::<span class='ident'>rdescribe</span>;
+
+<span class='comment'>// `rdescribe` instanciate a runner and run it transparently</span>
+<span class='ident'>rdescribe</span>(<span class='string'>&quot;inside this describe, we use the context&quot;</span>, <span class='op'>|</span><span class='ident'>ctx</span><span class='op'>|</span> {
+
+    <span class='ident'>ctx</span>.<span class='ident'>it</span>(<span class='string'>&quot;test at the root&quot;</span>, <span class='op'>||</span> <span class='prelude-val'>Ok</span>(()) <span class='kw'>as</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(),()<span class='op'>&gt;</span>);
+
+    <span class='ident'>ctx</span>.<span class='ident'>describe</span>(<span class='string'>&quot;a group of examples&quot;</span>, <span class='op'>|</span><span class='ident'>ctx</span><span class='op'>|</span> {
+
+        <span class='ident'>ctx</span>.<span class='ident'>it</span>(<span class='string'>&quot;should be usable inside a describe&quot;</span>, <span class='op'>||</span> <span class='prelude-val'>Ok</span>(()) <span class='kw'>as</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(),()<span class='op'>&gt;</span>);
+
+        <span class='ident'>ctx</span>.<span class='ident'>describe</span>(<span class='string'>&quot;a nested describe&quot;</span>, <span class='op'>|</span><span class='ident'>ctx</span><span class='op'>|</span> {
+
+            <span class='ident'>ctx</span>.<span class='ident'>it</span>(<span class='string'>&quot;should be usabel inside multiple describes&quot;</span>, <span class='op'>||</span> <span class='prelude-val'>Ok</span>(()) <span class='kw'>as</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(),()<span class='op'>&gt;</span>);
+            <span class='ident'>ctx</span>.<span class='ident'>it</span>(<span class='string'>&quot;should be able to declare multiple tests&quot;</span>, <span class='op'>||</span> <span class='prelude-val'>Ok</span>(()) <span class='kw'>as</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(),()<span class='op'>&gt;</span>);
+
+        });
+
+        <span class='ident'>ctx</span>.<span class='ident'>it</span>(<span class='string'>&quot;doesn&#39;t care if it&#39;s before or after a describe&quot;</span>, <span class='op'>||</span> <span class='prelude-val'>Ok</span>(()) <span class='kw'>as</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(),()<span class='op'>&gt;</span>);
+    });
+});</pre>
+</div><h4 id='method.before' class='method'><code>fn <a href='#method.before' class='fnname'>before</a>&lt;F&gt;(&amp;mut self, body: F) <span class='where'>where F: 'a + <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html' title='core::marker::Sync'>Sync</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.FnMut.html' title='core::ops::FnMut'>FnMut</a>() -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a></span></code></h4>
+<div class='docblock'><p>Declares a closure that will be executed before each test of the current Context.</p>
+
+<p><strong>PLEASE NOTE</strong>: due to a bug in current versions of rspec, the before closures <strong>WILL BE
+CALLED ONLY ONCE</strong> for all the children of the current context.</p>
+
+<h1 id='examples-2' class='section-header'><a href='#examples-2'>Examples</a></h1>
+<pre class='rust rust-example-rendered'>
+<span class='kw'>use</span> <span class='ident'>rspec</span>::<span class='ident'>context</span>::<span class='ident'>rdescribe</span>;
+<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>sync</span>::<span class='ident'>atomic</span>::{<span class='ident'>AtomicUsize</span>, <span class='ident'>Ordering</span>};
+
+<span class='kw'>let</span> <span class='ident'>counter</span> <span class='op'>=</span> <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>AtomicUsize</span>::<span class='ident'>new</span>(<span class='number'>0</span>);
+
+<span class='comment'>// `rdescribe` instanciate a runner and run it transparently</span>
+<span class='ident'>rdescribe</span>(<span class='string'>&quot;inside this describe, we use the context&quot;</span>, <span class='op'>|</span><span class='ident'>ctx</span><span class='op'>|</span> {
+
+    <span class='comment'>// This will increment the counter at each test</span>
+    <span class='ident'>ctx</span>.<span class='ident'>before</span>(<span class='op'>||</span> { <span class='ident'>counter</span>.<span class='ident'>fetch_add</span>(<span class='number'>1</span>, <span class='ident'>Ordering</span>::<span class='ident'>SeqCst</span>); });
+
+    <span class='ident'>ctx</span>.<span class='ident'>it</span>(<span class='string'>&quot;should run after the before&quot;</span>, <span class='op'>||</span> {
+        <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='number'>1</span>, <span class='ident'>counter</span>.<span class='ident'>load</span>(<span class='ident'>Ordering</span>::<span class='ident'>SeqCst</span>));
+        <span class='prelude-val'>Ok</span>(()) <span class='kw'>as</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(),()<span class='op'>&gt;</span>
+    });
+
+    <span class='ident'>ctx</span>.<span class='ident'>describe</span>(<span class='string'>&quot;a group of examples&quot;</span>, <span class='op'>|</span><span class='ident'>ctx</span><span class='op'>|</span> {
+
+        <span class='ident'>ctx</span>.<span class='ident'>it</span>(<span class='string'>&quot;should see 1 increment&quot;</span>, <span class='op'>||</span> {
+            <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='number'>2</span>, <span class='ident'>counter</span>.<span class='ident'>load</span>(<span class='ident'>Ordering</span>::<span class='ident'>SeqCst</span>));
+            <span class='prelude-val'>Ok</span>(()) <span class='kw'>as</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(),()<span class='op'>&gt;</span>
+        });
+
+        <span class='comment'>// XXX - note that the before has not been applied another time</span>
+        <span class='ident'>ctx</span>.<span class='ident'>it</span>(<span class='string'>&quot;should NOT see another increment&quot;</span>, <span class='op'>||</span> {
+            <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='number'>2</span>, <span class='ident'>counter</span>.<span class='ident'>load</span>(<span class='ident'>Ordering</span>::<span class='ident'>SeqCst</span>));
+            <span class='prelude-val'>Ok</span>(()) <span class='kw'>as</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(),()<span class='op'>&gt;</span>
+        });
+    });
+
+    <span class='ident'>ctx</span>.<span class='ident'>it</span>(<span class='string'>&quot;should run after the all the befores AND the previous it&quot;</span>, <span class='op'>||</span> {
+        <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='number'>3</span>, <span class='ident'>counter</span>.<span class='ident'>load</span>(<span class='ident'>Ordering</span>::<span class='ident'>SeqCst</span>));
+        <span class='prelude-val'>Ok</span>(()) <span class='kw'>as</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(),()<span class='op'>&gt;</span>
+    });
+});</pre>
+</div><h4 id='method.after' class='method'><code>fn <a href='#method.after' class='fnname'>after</a>&lt;F&gt;(&amp;mut self, body: F) <span class='where'>where F: 'a + <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html' title='core::marker::Sync'>Sync</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.FnMut.html' title='core::ops::FnMut'>FnMut</a>() -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a></span></code></h4>
+<div class='docblock'><p>Declares a closure that will be executed after each test of the current Context.</p>
+
+<p><strong>PLEASE NOTE</strong>: due to a bug in current versions of rspec, the after closures <strong>WILL BE
+CALLED ONLY ONCE</strong> for all the children of the current context.</p>
+
+<h1 id='examples-3' class='section-header'><a href='#examples-3'>Examples</a></h1>
+<pre class='rust rust-example-rendered'>
+<span class='kw'>use</span> <span class='ident'>rspec</span>::<span class='ident'>context</span>::<span class='ident'>rdescribe</span>;
+<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>sync</span>::<span class='ident'>atomic</span>::{<span class='ident'>AtomicUsize</span>, <span class='ident'>Ordering</span>};
+
+<span class='kw'>let</span> <span class='ident'>counter</span> <span class='op'>=</span> <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>AtomicUsize</span>::<span class='ident'>new</span>(<span class='number'>0</span>);
+
+<span class='comment'>// `rdescribe` instanciate a runner and run it transparently</span>
+<span class='ident'>rdescribe</span>(<span class='string'>&quot;inside this describe, we use the context&quot;</span>, <span class='op'>|</span><span class='ident'>ctx</span><span class='op'>|</span> {
+
+    <span class='comment'>// This will increment the counter at each test</span>
+    <span class='ident'>ctx</span>.<span class='ident'>after</span>(<span class='op'>||</span> { <span class='ident'>counter</span>.<span class='ident'>fetch_add</span>(<span class='number'>1</span>, <span class='ident'>Ordering</span>::<span class='ident'>SeqCst</span>); });
+
+    <span class='ident'>ctx</span>.<span class='ident'>it</span>(<span class='string'>&quot;should run after the after&quot;</span>, <span class='op'>||</span> {
+        <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='number'>0</span>, <span class='ident'>counter</span>.<span class='ident'>load</span>(<span class='ident'>Ordering</span>::<span class='ident'>SeqCst</span>));
+        <span class='prelude-val'>Ok</span>(()) <span class='kw'>as</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(),()<span class='op'>&gt;</span>
+    });
+
+    <span class='ident'>ctx</span>.<span class='ident'>describe</span>(<span class='string'>&quot;a group of examples&quot;</span>, <span class='op'>|</span><span class='ident'>ctx</span><span class='op'>|</span> {
+
+        <span class='ident'>ctx</span>.<span class='ident'>it</span>(<span class='string'>&quot;should see 1 increment&quot;</span>, <span class='op'>||</span> {
+            <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='number'>1</span>, <span class='ident'>counter</span>.<span class='ident'>load</span>(<span class='ident'>Ordering</span>::<span class='ident'>SeqCst</span>));
+            <span class='prelude-val'>Ok</span>(()) <span class='kw'>as</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(),()<span class='op'>&gt;</span>
+        });
+
+        <span class='comment'>// XXX - note that the after has not been applied another time</span>
+        <span class='ident'>ctx</span>.<span class='ident'>it</span>(<span class='string'>&quot;should NOT see another increment&quot;</span>, <span class='op'>||</span> {
+            <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='number'>1</span>, <span class='ident'>counter</span>.<span class='ident'>load</span>(<span class='ident'>Ordering</span>::<span class='ident'>SeqCst</span>));
+            <span class='prelude-val'>Ok</span>(()) <span class='kw'>as</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(),()<span class='op'>&gt;</span>
+        });
+    });
+
+    <span class='ident'>ctx</span>.<span class='ident'>it</span>(<span class='string'>&quot;should run after the all the afters AND the previous it&quot;</span>, <span class='op'>||</span> {
+        <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='number'>2</span>, <span class='ident'>counter</span>.<span class='ident'>load</span>(<span class='ident'>Ordering</span>::<span class='ident'>SeqCst</span>));
+        <span class='prelude-val'>Ok</span>(()) <span class='kw'>as</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span>(),()<span class='op'>&gt;</span>
+    });
+});</pre>
+</div></div><h2 id='implementations'>Trait Implementations</h2><h3 id='derived_implementations'>Derived Implementations </h3><h3 class='impl'><span class='in-band'><code>impl&lt;'a&gt; <a class='trait' href='https://doc.rust-lang.org/nightly/core/default/trait.Default.html' title='core::default::Default'>Default</a> for <a class='struct' href='../../rspec/context/struct.Context.html' title='rspec::context::Context'>Context</a>&lt;'a&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a id='src-158' class='srclink' href='../../src/rspec/src/context.rs.html#66' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.default' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default' class='fnname'>default</a>() -&gt; <a class='struct' href='../../rspec/context/struct.Context.html' title='rspec::context::Context'>Context</a>&lt;'a&gt;</code></h4>
+<div class='docblock'><p>Returns the &quot;default value&quot; for a type. <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">Read more</a></p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../";
+        window.currentCrate = "rspec";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../../jquery.js"></script>
+    <script src="../../main.js"></script>
+    
+    <script defer src="../../search-index.js"></script>
+</body>
+</html>
