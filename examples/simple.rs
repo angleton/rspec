@@ -1,40 +1,33 @@
-
 extern crate rspec;
-use rspec::context::describe;
+
 use std::io;
 
 pub fn main() {
     let stdout = &mut io::stdout();
     let mut formatter = rspec::formatter::Simple::new(stdout);
-    let mut runner = describe("rspec is a classic BDD testing", |ctx| {
 
-        ctx.it("can define tests", || true);
+    let mut runner = rspec::describe("rspec is a classic BDD testing", (), |ctx| {
+        ctx.it("can define tests", |_| true);
 
-        ctx.describe("rspec use results for tests results", |ctx| {
-
-            ctx.it("passed if the return is_ok()", || Ok(()) as Result<(),()>);
-
-            ctx.it("failed if the return is_err()", || Err(()) as Result<(),()>);
+        ctx.specify("rspec use results for tests results", |ctx| {
+            ctx.it("passes if the return is_ok()", |_| Ok(()) as Result<(),()>);
+            ctx.it("fails if the return is_err()", |_| Err(()) as Result<(),()>);
         });
 
-        ctx.describe("rspec can use bools", |ctx| {
-
-            ctx.it("should pass if true", || true);
-
-            ctx.it("should fail if false", || false);
-
-            ctx.it("is convenient for comparisons", || {
+        ctx.specify("rspec can use bools", |ctx| {
+            ctx.it("should pass if true", |_| true);
+            ctx.it("should fail if false", |_| false);
+            ctx.it("is convenient for comparisons", |_| {
                 (42 % 37 + 2) > 3
             })
         });
 
-        ctx.describe("rspec can use units", |ctx| {
-
-            ctx.it("should pass if the return is ()", || {});
-
-            ctx.it("is convenient for asserts", || assert_eq!(1, 1));
+        ctx.specify("rspec can use units", |ctx| {
+            ctx.it("should pass if the return is ()", |_| ());
+            ctx.it("is convenient for asserts", |_| assert_eq!(1, 1));
         });
     });
+
     runner.add_event_handler(&mut formatter);
-    runner.run().unwrap();
+    runner.run_or_exit();
 }

@@ -11,10 +11,10 @@
 //! let mut stdout = io::stdout();
 //! let mut formatter = Simple::new(&mut stdout);
 //!
-//! let mut runner = describe("a test suite", |_| {});
+//! let mut runner = describe("a test suite", (), |_, _| {});
 //! runner.add_event_handler(&mut formatter);
 //! // use the formatter
-//! runner.run().unwrap();
+//! runner.run(()).unwrap();
 //! ```
 
 pub mod formatter;
