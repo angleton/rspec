@@ -192,7 +192,7 @@ Welcome in the Rust community! Here are some links which can hopefully help:
 
 - [**Rust is a system programming language**](https://www.rust-lang.org). Check the
   rust-lang link for a detailed description, you can install it [with rustup](https://www.rustup.rs/).
-- **Newcomers**: [Rust by Example](http://rustbyexample.com/) is a fantastic
+- **Newcomers**: [Rust by Example](https://doc.rust-lang.org/rust-by-example/) is a fantastic
   resource to get started and grasp most of the Rust semantic. Check it out!
 - **Intermediate**: [The Rust Book](https://doc.rust-lang.org/book/) is the best
   resource to begin the journey to learn Rust.
